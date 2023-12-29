@@ -1,0 +1,75 @@
+#include <stdio.h>
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+
+int isEmpty() {
+    if (front == -1 && rear == -1)
+        return 1;
+    else
+        return 0;
+}
+
+void enqueue(int data) {
+    if (rear == MAX_SIZE - 1) {
+        printf("Queue is full. Cannot enqueue element.\n");
+        return;
+    }
+    if (isEmpty()) {
+        front = rear = 0;
+    } else {
+        rear++;
+    }
+    queue[rear] = data;
+    printf("%d enqueued to the queue.\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue is empty. Cannot dequeue element.\n");
+        return;
+    } else if (front == rear) {
+        printf("%d dequeued from the queue.\n", queue[front]);
+        front = rear = -1;
+    } else {
+        printf("%d dequeued from the queue.\n", queue[front]);
+        front++;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    printf("Elements in the queue are: ");
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    display();
+    dequeue();
+    display();
+    enqueue(40);
+    display();
+    return 0;
+}
+
+Sample Output:
+
+10 enqueued to the queue.
+20 enqueued to the queue.
+30 enqueued to the queue.
+Elements in the queue are: 10 20 30
+10 dequeued from the queue.
+Elements in the queue are: 20 30
+40 enqueued to the queue.
+Elements in the queue are: 20 30 40
