@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int coefficient;
+    int exponent;
+    struct Node* next;
+};
+
+struct Node* createNode(int coefficient, int exponent) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->coefficient = coefficient;
+    newNode->exponent = exponent;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void insertTerm(struct Node** poly, int coefficient, int exponent) {
+    struct Node* newNode = createNode(coefficient, exponent);
+
+    if (*poly == NULL) {
+        *poly = newNode;
+    } else {
+        struct Node* temp = *poly;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+void displayPolynomial(struct Node* poly) {
+    struct Node* temp = poly;
+    while (temp != NULL) {
+        printf("%dx^%d ", temp->coefficient, temp->exponent);
+        if (temp->next != NULL) {
+            printf("+ ");
+        }
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+struct Node* addPolynomials(struct Node* poly1, struct Node* poly2) {
+    struct Node* result = NULL;
+    struct Node* temp1 = poly1;
+    struct Node* temp2 = poly2;
+
+    while (temp1 != NULL && temp2 != NULL) {
+        if (temp1->exponent > temp2->exponent) {
+            insertTerm(&result, temp1->coefficient, temp1->exponent);
+            temp1 = temp1->next;
+        } else if (temp1->exponent < temp2->exponent) {
+            insertTerm(&result, temp2->coefficient, temp2->exponent);
+            temp2 = temp2->next;
+        } else {
+            int sum = temp1->coefficient + temp2->coefficient;
+            if (sum != 0) {
+                insertTerm(&result, sum, temp1->exponent);
+            }
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+    }
+
+    while (temp1 != NULL) {
+        insertTerm(&result, temp1->coefficient, temp1->exponent);
+        temp1 = temp1->next
+         }
+
+    while (temp2 != NULL) {
+        insertTerm(&result, temp2->coefficient, temp2->exponent);
+        temp2 = temp2->next;
+    }
+
+    return result;
+}
+
+int main() {
+    struct Node* poly1 = NULL;
+    struct Node* poly2 = NULL;
+    struct Node* sum = NULL;
+
+    // Insert terms into the first polynomial
+    insertTerm(&poly1, 3, 2);
+    insertTerm(&poly1, 4, 1);
+    insertTerm(&poly1, 2, 0);
+
+    // Insert terms into the second polynomial
+    insertTerm(&poly2, 5, 2);
+    insertTerm(&poly2, 2, 1);
+    insertTerm(&poly2, 1, 0);
+
+    printf("Polynomial 1: ");
+    displayPolynomial(poly1);
+
+    printf("Polynomial 2: ");
+    displayPolynomial(poly2);
+
+    sum = addPolynomials(poly1, poly2);
+
+    printf("Sum of the polynomials: ");
+    displayPolynomial(sum);
+
+    return 0;
+}
+
+
+Sample Output:
+
+Polynomial 1: 3x^2 + 4x^1 + 2x^0
+Polynomial 2: 5x^2 + 2x^1 + 1x^0
+Sum of the polynomials: 8x^2 + 6x^1 + 3x^0
+
