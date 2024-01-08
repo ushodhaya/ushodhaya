@@ -180,12 +180,12 @@ int main() {
 
     return 0;
 }
-1:28 pm
+
 Preorder traversal of the constructed AVL tree is: 
 30 20 10 25 40 50 
 Preorder traversal after deletion of 30: 
 25 20 10 40 50
-1:28 pm
+
 
 
 
